@@ -20,14 +20,14 @@
 			<Node name="CalibrationBoard" displayName="CalibrationBoard" />
 			<Node name="Origin" displayName="Origin" />
 
-            <Edge name="GrayImageLeft" source="ImagePlaneLeft" destination="CalibrationBoard" displayName="GrayImageLeft">
-                <Predicate>type=='Image'</Predicate>
-            </Edge>
-			<Edge name="GrayImageRight" source="ImagePlaneRight" destination="CalibrationBoard" displayName="GrayImageRight">
-                <Predicate>type=='Image'</Predicate>
-            </Edge>
 			<Edge name="GridPoints" source="Origin" destination="CalibrationBoard" displayName="GridPoints">
                 <Predicate>type=='3DPositionList'</Predicate>
+            </Edge>
+			<Edge name="CornersLeft" source="ImagePlaneLeft" destination="CalibrationBoard" displayName="Chessboard Corners Left" >
+                <Predicate>type=='2DPositionList'</Predicate>
+            </Edge>
+			<Edge name="CornersRight" source="ImagePlaneRight" destination="CalibrationBoard" displayName="Chessboard Corners Right" >
+                <Predicate>type=='2DPositionList'</Predicate>
             </Edge>
 		</Input>
 		
@@ -54,31 +54,15 @@
 				<Attribute name="mode" value="push" xsi:type="EnumAttributeReferenceType"/>
 				<Attribute name="static" value="true" xsi:type="EnumAttributeReferenceType"/>
 			</Edge>
-			<!-- Debug images -->
-			<Edge name="CornerImage" source="CalibrationBoard" destination="ImagePlaneLeft" displayName="CornerImage">
-				<Description>
-					<h:p>CornerImage</h:p>
-				</Description>
-				<Attribute name="type" value="Image" xsi:type="EnumAttributeReferenceType"/>
-				<Attribute name="mode" value="push" xsi:type="EnumAttributeReferenceType"/>				
-			</Edge>			
-			<Edge name="RectifiedImage" source="CalibrationBoard" destination="ImagePlaneLeft" displayName="RectifiedImage">
-				<Description>
-					<h:p>RectifiedImage</h:p>
-				</Description>
-				<Attribute name="type" value="Image" xsi:type="EnumAttributeReferenceType"/>
-				<Attribute name="mode" value="push" xsi:type="EnumAttributeReferenceType"/>				
-			</Edge>
 		</Output>
 		
 		<Constraints>
         	<TriggerGroup>
 				<!-- Input edges -->
-                <Edge edge-ref="GrayImageLeft"/>
-				<Edge edge-ref="GrayImageRight"/>
 				<Edge edge-ref="GridPoints"/>
+				<Edge edge-ref="CornersLeft"/>
+				<Edge edge-ref="CornersRight"/>
 				<!-- Output edges -->
-				<Edge edge-ref="CornerImage"/>
             </TriggerGroup>
         </Constraints>
 
