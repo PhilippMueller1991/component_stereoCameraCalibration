@@ -153,6 +153,12 @@ void StereoCameraCalibrationOpenCVComponent::stop()
 
 void StereoCameraCalibrationOpenCVComponent::compute(Measurement::Timestamp t)
 {
+	if (m_cornersLeft.get()->size() != m_cornersRight.get()->size())
+	{
+		LOG4CPP_INFO(logger, "Number of found corners differs.");
+		return;
+	}
+
 	// Left image corners
 	m_imagePoints[0].resize(m_imagePoints[0].size() + 1);
 	m_imagePoints[0][m_imagePoints[0].size() - 1].resize(m_cornersLeft.get()->size());
@@ -164,11 +170,11 @@ void StereoCameraCalibrationOpenCVComponent::compute(Measurement::Timestamp t)
 
 	// Right image corners
 	m_imagePoints[1].resize(m_imagePoints[1].size() + 1);
-	m_imagePoints[1][m_imagePoints[1].size() - 1].resize(m_cornersLeft.get()->size());
-	for (int i = 0; i < m_cornersLeft.get()->size(); i++)
+	m_imagePoints[1][m_imagePoints[1].size() - 1].resize(m_cornersRight.get()->size());
+	for (int i = 0; i < m_cornersRight.get()->size(); i++)
 	{
-		Ubitrack::Math::Vector2d& utCornerLeft = m_cornersLeft.get()->data()[i];
-		m_imagePoints[1][m_imagePoints[1].size() - 1][i] = cv::Point2f((float)utCornerLeft[0], (float)utCornerLeft[1]);
+		Ubitrack::Math::Vector2d& utCornerRight = m_cornersRight.get()->data()[i];
+		m_imagePoints[1][m_imagePoints[1].size() - 1][i] = cv::Point2f((float)utCornerRight[0], (float)utCornerRight[1]);
 	}
 
 	LOG4CPP_INFO(logger, "Starting stereo calibration with " << m_imagePoints[0].size() << " image pairs.");
