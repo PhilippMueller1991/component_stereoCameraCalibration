@@ -159,6 +159,9 @@ void StereoCameraCalibrationOpenCVComponent::compute(Measurement::Timestamp t)
 		return;
 	}
 
+	// Conversion von ubitrack coordinates to OpenCV gives even worse results
+	// Conversion: x,y ==> x,-y
+
 	// Left image corners
 	m_imagePoints[0].resize(m_imagePoints[0].size() + 1);
 	m_imagePoints[0][m_imagePoints[0].size() - 1].resize(m_cornersLeft.get()->size());
